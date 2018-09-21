@@ -7,4 +7,4 @@ ann:main.cpp ann.cpp  ann.h
 run:
 	./ann
 clean:
-	rm -f ann *.r
+	rm -f ann

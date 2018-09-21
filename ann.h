@@ -1,15 +1,19 @@
 #ifndef MY_SYMBOL_H
 #define MY_SYMBOL_H
 
+#include <vector>
+
 class Neuron{
 double input;
 double error;
 double output;
-std::vector<double> inputs;
+
 std::vector<double> weights;
 
 public:
+  std::vector<double> inputs;
   Neuron(){};
+  Neuron(std::vector<double> _weights):weights(std::move(_weights)){};
 
   double getError() const {
          return error;
