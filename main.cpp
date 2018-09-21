@@ -17,7 +17,7 @@ cout<<"hello world"<<endl;
 vector<vector<double> > initialInputs ={{0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1}};
 
 
-initialiseLayers( layers, initialInputs[3]);
+initialiseLayers( layers, initialInputs[7]);
 forward_pass(layers);
 return 0;}
 
@@ -32,8 +32,10 @@ void forward_pass(vector<vector<Neuron> > &layers){
     for(unsigned int i=1;i<layers.size();++i){
         prev_layer=layers[i-1];
         for(unsigned int j=0;j<layers[i].size();++j){
+
             double input= prev_layer[0].getOutput()*layers[i][j].getWeights()[0]+prev_layer[1].getOutput()*layers[i][j].getWeights()[1];
-           cout<<"out"<<i<<" "<<j<<": "<<transferFunction(input)<<endl;
+            //cout<<"outputs "<<prev_layer[0].getOutput()<<" "<<prev_layer[1].getOutput()<<endl;
+           cout<<"out"<<i<<" "<<j<<": "<<transferFunction(input)<<" input "<<input<<endl;
             vector<double> inputs={prev_layer[0].getOutput(),prev_layer[1].getOutput()};
             layers[i][j].inputs=inputs;
             layers[i][j].setInput(input);
@@ -58,10 +60,14 @@ layers.reserve(3);
 
 for(int i=0;i<3;++i){
 Neuron l1;
-  l1.setInput(inputs[i]);
+
+l1.setInput(inputs[i]);
+l1.setOutput(inputs[i]);
 temp.push_back(l1);
 }
+
 layers.push_back(temp);
+
 // initialise the hidden and output layer with random weights
 int numberOfHidden =2;
 for (int j=0;j<numberOfHidden;++j){
