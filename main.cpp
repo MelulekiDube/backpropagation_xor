@@ -17,7 +17,7 @@ cout<<"hello world"<<endl;
 vector<vector<double> > initialInputs ={{0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1}};
 
 
-initialiseLayers( layers, initialInputs[2]);
+initialiseLayers( layers, initialInputs[3]);
 forward_pass(layers);
 return 0;}
 
