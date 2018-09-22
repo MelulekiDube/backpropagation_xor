@@ -11,15 +11,77 @@ void forward_pass(vector<vector<Neuron> > &layers);
 void back_pass(vector<vector<Neuron> > &layers);
 void initialiseLayers(vector<vector<Neuron> > &layers,vector<double> inputs);
 double getRandomWeight();
+double getError(double output,double target);
 
 int main() {
 cout<<"hello world"<<endl;
 vector<vector<double> > initialInputs ={{0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1}};
+std::vector<double> targets={0,1,1,1,1,1,1,0};
 
-
-initialiseLayers( layers, initialInputs[7]);
+initialiseLayers( layers, initialInputs[2]);
 forward_pass(layers);
-return 0;}
+return 0;
+}
+
+
+
+
+
+
+void back_pass(vector<vector<Neuron> > &layers){
+
+    double h1_error= layers[1][0].getOutput()*(1-layers[1][0].getOutput())*(layers[2][0].getWeights()[0]*layers[2][0].getError()+layers[2][1].getWeights()[0]*layers[2][1].getError());
+
+    double h2_error= layers[1][1].getOutput()*(1-layers[1][1].getOutput())*(layers[2][0].getWeights()[1]*layers[2][0].getError()+layers[2][1].getWeights()[1]*layers[2][1].getError());
+    layers[1][0].setError(h1_error);
+    layers[1][1].setError(h2_error);
+    //cout<<"h1 error "<<h1_error<<endl;
+  //  cout<<"h1 error "<<h2_error<<endl;
+
+
+
+    double v11=layers[1][0].getWeights()[0]+(0.1*layers[1][0].getError()*layers[1][0].inputs[0]);
+    double v12=layers[1][0].getWeights()[1]+(0.1*layers[1][0].getError()*layers[1][0].inputs[1]);
+    vector<double> weights_v ={v11,v12};
+    layers[1][0].setWeights(weights_v);
+
+    double v21=layers[1][1].getWeights()[0]+(0.1*layers[1][1].getError()*layers[1][1].inputs[0]);
+    double v22=layers[1][1].getWeights()[1]+(0.1*layers[1][1].getError()*layers[1][1].inputs[1]);
+    vector<double> weights_v1 ={v21,v22};
+    layers[1][1].setWeights(weights_v1);
+
+//    cout<<"v11: "<<v11<<endl;
+//cout<<"v11: "<<v12<<endl;
+//cout<<"v11: "<<v21<<endl;
+//cout<<"v11: "<<v22<<endl;
+
+
+    double w11=layers[2][0].getWeights()[0]+(0.1*layers[2][0].getError()*layers[2][0].inputs[0]);
+  // cout<<"weight w11: "<<w11<<" weight1 "<<layers[2][0].weights[0]<<endl;
+
+    double w12=layers[2][0].getWeights()[1]+(0.1*layers[2][0].getError()*layers[2][0].inputs[1]);
+   // cout<<"weight w12: "<<w12<<" weight1 "<<layers[2][0].weights[1]<<endl;
+    vector<double> weights ={w11,w12};
+    layers[2][0].setWeights(weights);
+    double w21=layers[2][1].getWeights()[0]+(0.1*layers[2][1].getError()*layers[2][1].inputs[0]);
+   // cout<<"weight w21: "<<w21<<endl;
+    double w22=layers[2][1].getWeights()[1]+(0.1*layers[2][1].getError()*layers[2][1].inputs[1]);
+    //cout<<"weight w22: "<<w22<<endl;
+    vector<double> weights1 ={w21,w22};
+    layers[2][1].setWeights(weights1);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * passes the data to the next layer in the network
@@ -102,7 +164,7 @@ double calcErrorOutput(double output,double target){
 }
 
 double getRandomWeight(){
-  srand(time(0));
+//  srand(time(0));
   double r = ((double) rand() / (RAND_MAX));
 //cout<<"random is "<<r<<endl;
   return r;
