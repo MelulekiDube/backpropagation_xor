@@ -7,6 +7,7 @@ class Neuron{
 double input;
 double error;
 double output;
+double target;
 
 std::vector<double> weights;
 
@@ -46,6 +47,14 @@ public:
      void setInput(double input) {
          Neuron::input = input;
  }
+
+ double getTarget() const {
+     return target;
+ }
+
+ void setTarget(double target) {
+     Neuron::target = target;
+}
 
 };
 
