@@ -60,21 +60,17 @@ void back_pass(vector<vector<Neuron> > &layers){
     vector<double> weights_v1 ={v21,v22,v23};
     layers[1][1].setWeights(weights_v1);
 
-//    cout<<"v11: "<<v11<<endl;
-//cout<<"v11: "<<v12<<endl;
-//cout<<"v11: "<<v21<<endl;
-//cout<<"v11: "<<v22<<endl;
 
 
-    double w11=layers[2][0].getWeights()[0]+(0.1*layers[2][0].getError()*layers[2][0].inputs[0]);
-    //
 
-    double w12=layers[2][0].getWeights()[1]+(0.1*layers[2][0].getError()*layers[2][0].inputs[1]);
-    vector<double> weights ={w11,w12};
-    //cout<<"weight w12: "<<w12<<" weightenw12 "<<layers[2][0].getWeights()[1]<<endl;
-  //  cout<<"weight w11: "<<w11<<" weightnew11 "<<layers[2][0].getWeights()[0]<<endl;
+      vector<double> weights2 ;
+    for(unsigned int w=0;w<layers[2][0].inputs.size();++w){
+        weights2.push_back(layers[2][0].getWeights()[w]+(0.1*layers[2][0].getError()*layers[2][0].inputs[w]));
+    }
 
-    layers[2][0].setWeights(weights);
+
+
+    layers[2][0].setWeights(weights2);
 
     }
 
@@ -92,24 +88,14 @@ void forward_pass(vector<vector<Neuron> > &layers){
         for(unsigned int j=0;j<layers[i].size();++j){
 
             double input=0;
-            //cout<<"outputs "<<prev_layer[0].getOutput()<<" "<<prev_layer[1].getOutput()<<endl;
-        //   cout<<"out"<<i<<" "<<j<<": "<<transferFunction(input)<<" input "<<input<<endl;
+
   vector<double> inputs;
   for (unsigned int p=0;p<prev_layer.size();++p){
     inputs.push_back(prev_layer[p].getOutput());//{,prev_layer[1].getOutput()};
     input+=prev_layer[p].getOutput()*layers[i][j].getWeights()[0];
 
   }
-          /*if(i==2){
-           inputs={prev_layer[0].getOutput(),prev_layer[1].getOutput()};
 
-           input= prev_layer[0].getOutput()*layers[i][j].getWeights()[0]+prev_layer[1].getOutput()*layers[i][j].getWeights()[1];
-          }
-          else{
-
-               inputs={prev_layer[0].getOutput(),prev_layer[1].getOutput(),prev_layer[2].getOutput()};
-               input= prev_layer[0].getOutput()*layers[i][j].getWeights()[0]+prev_layer[1].getOutput()*layers[i][j].getWeights()[1]+prev_layer[2].getOutput()*layers[i][j].getWeights()[2];
-          }*/
             layers[i][j].inputs=inputs;
             layers[i][j].setInput(input);
             layers[i][j].setOutput(transferFunction(input));
