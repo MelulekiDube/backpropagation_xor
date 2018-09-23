@@ -9,7 +9,7 @@ double transferFunction(double x);
 vector<vector<Neuron> > layers;
 void forward_pass(vector<vector<Neuron> > &layers);
 void back_pass(vector<vector<Neuron> > &layers);
-void initialiseLayers(vector<vector<Neuron> > &layers,vector<double> inputs,double target);
+void initialiseLayers(vector<vector<Neuron> > &layers,vector<double> inputs,double target,int numberOfHiddenNeurons);
 double getRandomWeight();
 double getError(double output,double target);
 double calcErrorOutput(double output,double target);
@@ -18,12 +18,12 @@ int main() {
 
 vector<vector<double> > initialInputs ={{0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1}};
 std::vector<double> targets={0,1,1,1,1,1,1,0};
-int index =2;
-initialiseLayers( layers, initialInputs[index],targets[index]);
-for(int i=0;i<20000;++i){
+int index =0;
+initialiseLayers( layers, initialInputs[index],targets[index],2);
+for(unsigned int i=0;i<20000;++i){
 forward_pass(layers);
 back_pass(layers);
-cout<<"The output is: "<<layers[2][0].getOutput()<<endl;
+cout<<i<<" The output is: "<<layers[2][0].getOutput()<<endl;
 //cout<<"input length "<<layers[1][0].inputs.size()<<endl;
 }
 return 0;
@@ -75,13 +75,7 @@ void back_pass(vector<vector<Neuron> > &layers){
   //  cout<<"weight w11: "<<w11<<" weightnew11 "<<layers[2][0].getWeights()[0]<<endl;
 
     layers[2][0].setWeights(weights);
-  /*double w21=layers[2][1].getWeights()[0]+(0.1*layers[2][1].getError()*layers[2][1].inputs[0]);
-   // cout<<"weight w21: "<<w21<<endl;
-    double w22=layers[2][1].getWeights()[1]+(0.1*layers[2][1].getError()*layers[2][1].inputs[1]);
-    //cout<<"weight w22: "<<w22<<endl;
-    vector<double> weights1 ={w21,w22};
-    layers[2][1].setWeights(weights1);
-*/
+
     }
 
 
@@ -97,20 +91,29 @@ void forward_pass(vector<vector<Neuron> > &layers){
         prev_layer=layers[i-1];
         for(unsigned int j=0;j<layers[i].size();++j){
 
-            double input= prev_layer[0].getOutput()*layers[i][j].getWeights()[0]+prev_layer[1].getOutput()*layers[i][j].getWeights()[1];
+            double input=0;
             //cout<<"outputs "<<prev_layer[0].getOutput()<<" "<<prev_layer[1].getOutput()<<endl;
         //   cout<<"out"<<i<<" "<<j<<": "<<transferFunction(input)<<" input "<<input<<endl;
   vector<double> inputs;
-          if(i==2){
+  for (unsigned int p=0;p<prev_layer.size();++p){
+    inputs.push_back(prev_layer[p].getOutput());//{,prev_layer[1].getOutput()};
+    input+=prev_layer[p].getOutput()*layers[i][j].getWeights()[0];
+
+  }
+          /*if(i==2){
            inputs={prev_layer[0].getOutput(),prev_layer[1].getOutput()};
+
+           input= prev_layer[0].getOutput()*layers[i][j].getWeights()[0]+prev_layer[1].getOutput()*layers[i][j].getWeights()[1];
           }
           else{
 
                inputs={prev_layer[0].getOutput(),prev_layer[1].getOutput(),prev_layer[2].getOutput()};
-          }
+               input= prev_layer[0].getOutput()*layers[i][j].getWeights()[0]+prev_layer[1].getOutput()*layers[i][j].getWeights()[1]+prev_layer[2].getOutput()*layers[i][j].getWeights()[2];
+          }*/
             layers[i][j].inputs=inputs;
             layers[i][j].setInput(input);
             layers[i][j].setOutput(transferFunction(input));
+
         }
     }
     //set the error for the output Neuron
@@ -124,7 +127,7 @@ void forward_pass(vector<vector<Neuron> > &layers){
  * @param layers neural network layers
  * @param inputs initial inputs
  */
-void initialiseLayers(vector<vector<Neuron> > &layers,vector<double> inputs,double target){
+void initialiseLayers(vector<vector<Neuron> > &layers,vector<double> inputs,double target,int numberOfHiddenNeurons){
 
 layers.reserve(3);
   //initialise the first layer, set inputs
@@ -143,8 +146,8 @@ temp.push_back(l1);
 layers.push_back(temp);
 
 // initialise the hidden and output layer with random weights
-int numberOfHidden =2;
-for (int j=0;j<numberOfHidden;++j){
+
+for (int j=0;j<numberOfHiddenNeurons;++j){
   std::vector<double> weights2={getRandomWeight(),getRandomWeight(),getRandomWeight()};
   Neuron l2(weights2);
   temp1.push_back(l2);
