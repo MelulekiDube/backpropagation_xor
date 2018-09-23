@@ -14,14 +14,16 @@ double getRandomWeight();
 double getError(double output,double target);
 double calcErrorOutput(double output,double target);
 
+
+
 int main() {
 
 vector<vector<double> > initialInputs ={{0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1}};
 std::vector<double> targets={0,1,1,1,1,1,1,0};
 int index =0;
-int numberOfHiddenNeurons=2;
+int numberOfHiddenNeurons=40;
 initialiseLayers( layers, initialInputs[index],targets[index],numberOfHiddenNeurons);
-for(unsigned int i=0;i<20000;++i){
+for(unsigned int i=0;i<20000000;++i){
 forward_pass(layers);
 back_pass(layers);
 //cout<<"test:\nsizel1: "<<layers[1].size()<<" sizew2 "<<layers[2][0].getWeights().size()<<endl;
@@ -35,41 +37,19 @@ return 0;
 
 
 
-
+/**
+ * does a backprogation back_pass
+ * @param layers [description]
+ */
 void back_pass(vector<vector<Neuron> > &layers){
 
-    /*double h1_error= layers[1][0].getOutput()*(1-layers[1][0].getOutput())*(layers[2][0].getWeights()[0]*layers[2][0].getError());
 
-    double h2_error= layers[1][1].getOutput()*(1-layers[1][1].getOutput())*(layers[2][0].getWeights()[1]*layers[2][0].getError());
-*/
-
-//calculate error for hidden nodes
 for(unsigned int i=0;i<layers[1].size();++i){
     layers[1][i].setError(layers[1][0].getOutput()*(1-layers[1][0].getOutput())*(layers[2][0].getWeights()[i]*layers[2][0].getError()));
 
 }
 
 
-  //  layers[1][0].setError(h1_error);
-  //  layers[1][1].setError(h2_error);
-   //  cout<<"h1 error "<<h1_error<<endl;
-   // cout<<"h2 error "<<h2_error<<endl;
-
-
-
-  /*  double v11=layers[1][0].getWeights()[0]+(0.1*layers[1][0].getError()*layers[1][0].inputs[0]);
-    double v12=layers[1][0].getWeights()[1]+(0.1*layers[1][0].getError()*layers[1][0].inputs[1]);
-    double v13=layers[1][0].getWeights()[2]+(0.1*layers[1][0].getError()*layers[1][0].inputs[2]);
-
-    vector<double> weights_v ={v11,v12,v13};
-    layers[1][0].setWeights(weights_v);
-
-    double v21=layers[1][1].getWeights()[0]+(0.1*layers[1][1].getError()*layers[1][1].inputs[0]);
-    double v22=layers[1][1].getWeights()[1]+(0.1*layers[1][1].getError()*layers[1][1].inputs[1]);
-    double v23=layers[1][1].getWeights()[2]+(0.1*layers[1][1].getError()*layers[1][1].inputs[2]);
-
-    vector<double> weights_v1 ={v21,v22,v23};
-    */
 
 for(unsigned int i=0;i<layers[1].size();++i){
       vector<double> weights_v1;
@@ -174,18 +154,32 @@ layers.push_back(temp2);
 
 }
 
-
+/**
+ * use the sigmoid function to calculate the output
+ * @param  x neuron input
+ * @return
+ */
 
 double transferFunction(double x) {
 
     return 1/(1+exp(-x));
 }
 
+/**
+ * calculates error for the output nodes
+ * @param  output [description]
+ * @param  target [description]
+ * @return        [description]
+ */
 double calcErrorOutput(double output,double target){
 
  return output*(1-output)*(target-output);
 }
 
+/**
+ * gets random number
+ * @return [description]
+ */
 double getRandomWeight(){
 //  srand(time(0));
   double r = ((double) rand() / (RAND_MAX));
