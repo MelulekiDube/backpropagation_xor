@@ -16,14 +16,15 @@ double calcErrorOutput(double output,double target);
 
 
 
+
 int main() {
 
 vector<vector<double> > initialInputs ={{0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1}};
 std::vector<double> targets={0,1,1,1,1,1,1,0};
 int index =0;
-int numberOfHiddenNeurons=40;
+int numberOfHiddenNeurons=1;
 initialiseLayers( layers, initialInputs[index],targets[index],numberOfHiddenNeurons);
-for(unsigned int i=0;i<20000000;++i){
+for(unsigned int i=0;i<2000000;++i){
 forward_pass(layers);
 back_pass(layers);
 //cout<<"test:\nsizel1: "<<layers[1].size()<<" sizew2 "<<layers[2][0].getWeights().size()<<endl;
