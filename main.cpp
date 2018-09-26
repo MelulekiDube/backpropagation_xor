@@ -21,15 +21,17 @@ int main() {
 
 vector<vector<double> > initialInputs ={{0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1}};
 std::vector<double> targets={0,1,1,1,1,1,1,0};
-int index =0;
+int index =1;
 int numberOfHiddenNeurons=1;
-initialiseLayers( layers, initialInputs[index],targets[index],numberOfHiddenNeurons);
-for(unsigned int i=0;i<2000000;++i){
+for(unsigned int i=0;i<targets.size();++i){
+initialiseLayers( layers, initialInputs[i],targets[i],numberOfHiddenNeurons);
+  cout<<" index "<<i<<endl;
+for(unsigned int j=0;j<200;++j){
+  cout<<" indexj "<<j<<endl;
 forward_pass(layers);
 back_pass(layers);
-//cout<<"test:\nsizel1: "<<layers[1].size()<<" sizew2 "<<layers[2][0].getWeights().size()<<endl;
-cout<<i<<" The output is: "<<layers[2][0].getOutput()<<endl;
-//cout<<"input length "<<layers[1][0].inputs.size()<<endl;
+cout<<j<<" The output is: "<<layers[2][0].getOutput()<<endl;
+}
 }
 return 0;
 }
