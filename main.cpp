@@ -34,10 +34,12 @@ for(unsigned int j=0;j<50000;++j){
 forward_pass(layers);
 back_pass(layers);
 }
-cout<<" The output is: "<<i<<" "<<layers[2][0].getOutput()<<endl;
+cout<<"The output for input"<<i<<" is: "<<layers[2][0].getOutput()<<endl;
 meanSquaredError+=calcMeanSquaredError(layers[2][0].getOutput(),targets[i]);
 }
-cout<<"MSE is: "<<meanSquaredError<<endl;
+cout<<"\nMSE is: "<<meanSquaredError<<endl;
+
+
 return 0;
 }
 
