@@ -21,17 +21,20 @@ int main() {
 
 vector<vector<double> > initialInputs ={{0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1}};
 std::vector<double> targets={0,1,1,1,1,1,1,0};
-int index =1;
+
+
 int numberOfHiddenNeurons=1;
 for(unsigned int i=0;i<targets.size();++i){
+  layers.clear();
 initialiseLayers( layers, initialInputs[i],targets[i],numberOfHiddenNeurons);
-  cout<<" index "<<i<<endl;
-for(unsigned int j=0;j<200;++j){
-  cout<<" indexj "<<j<<endl;
+  //cout<<" index "<<i<<endl;
+for(unsigned int j=0;j<5000;++j){
+  //cout<<" indexj "<<j<<endl;
 forward_pass(layers);
 back_pass(layers);
-cout<<j<<" The output is: "<<layers[2][0].getOutput()<<endl;
 }
+cout<<" The output is: "<<i<<" "<<layers[2][0].getOutput()<<endl;
+
 }
 return 0;
 }
@@ -86,7 +89,7 @@ for(unsigned int i=0;i<layers[1].size();++i){
  */
 
 void forward_pass(vector<vector<Neuron> > &layers){
-//  cout<<layers.size()<<endl;
+
     vector<Neuron> prev_layer;
     for(unsigned int i=1;i<layers.size();++i){
         prev_layer=layers[i-1];
