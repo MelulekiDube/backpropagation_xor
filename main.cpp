@@ -13,7 +13,7 @@ void initialiseLayers(vector<vector<Neuron> > &layers,vector<double> inputs,doub
 double getRandomWeight();
 double getError(double output,double target);
 double calcErrorOutput(double output,double target);
-
+double calcMeanSquaredError(double expected,double target);
 
 
 
@@ -22,24 +22,37 @@ int main() {
 vector<vector<double> > initialInputs ={{0,0,0},{0,0,1},{0,1,0},{0,1,1},{1,0,0},{1,0,1},{1,1,0},{1,1,1}};
 std::vector<double> targets={0,1,1,1,1,1,1,0};
 
+double meanSquaredError=0;
 
 int numberOfHiddenNeurons=1;
 for(unsigned int i=0;i<targets.size();++i){
   layers.clear();
 initialiseLayers( layers, initialInputs[i],targets[i],numberOfHiddenNeurons);
   //cout<<" index "<<i<<endl;
-for(unsigned int j=0;j<5000;++j){
+for(unsigned int j=0;j<50000;++j){
   //cout<<" indexj "<<j<<endl;
 forward_pass(layers);
 back_pass(layers);
 }
 cout<<" The output is: "<<i<<" "<<layers[2][0].getOutput()<<endl;
-
+meanSquaredError+=calcMeanSquaredError(layers[2][0].getOutput(),targets[i]);
 }
+cout<<"MSE is: "<<meanSquaredError<<endl;
 return 0;
 }
 
 
+
+
+/**
+ * calculates mean squared error
+ * @param layers [description]
+ */
+
+double calcMeanSquaredError(double output,double target){
+
+  return pow((output-target),2);
+}
 
 
 
