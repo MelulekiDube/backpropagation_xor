@@ -14,13 +14,3 @@
  ### training examples
  - The program was run 50 000 times for each input so to train it to solver the xor problem
 
- | Input 1|Input 2|Input 3|output|
- | -------|:-----:| -----:|------:|
- | 0      |0      |0      |0      |
- | 0      |0      |1      |1      |
- | 0      |1      |0      |1      |
- | 0      |1      |1      |0      |
- | 1      |0      |0      |1      |
- | 1      |0      |1      |0      |
- | 1      |1      |0      |0      |
- | 1      |1      |1      |1      |
